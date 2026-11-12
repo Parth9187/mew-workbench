@@ -1,0 +1,34 @@
+[project]
+name = "mew-workbench"
+version = "0.1.0"
+description = "A toolkit for evaluating and exploring multimodal embeddings."
+readme = "README.md"
+authors = [
+    { name = "Parth Goel", email = "parthg9187@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = ["typer>=0.12,<1", "rich>=13,<15"]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.11,<1"]
+
+[project.scripts]
+mew = "mew.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.11.23,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "mew"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-config --strict-markers"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
