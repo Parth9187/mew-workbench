@@ -74,6 +74,15 @@ def test_incomplete_rows(tmp_path: Path, content: str, row: int, field: str) -> 
         load_csv(path)
 
 
+@pytest.mark.parametrize("extra", [",unexpected", ",", ",one,two"])
+def test_extra_columns(tmp_path: Path, extra: str) -> None:
+    path = tmp_path / "dataset.csv"
+    path.write_text(f"image_path,caption\ncat.jpg,Cat\ndog.jpg,Dog{extra}\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="row 3: extra columns beyond the header"):
+        load_csv(path)
+
+
 def test_header_only(tmp_path: Path) -> None:
     path = tmp_path / "dataset.csv"
     path.write_text("image_path,caption\n", encoding="utf-8")
