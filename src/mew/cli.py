@@ -4,6 +4,7 @@ import typer
 from rich.console import Console
 
 from mew import __version__
+from mew.commands.dataset import app as dataset_app
 
 app = typer.Typer(
     name="mew",
@@ -12,6 +13,7 @@ app = typer.Typer(
     add_completion=False,
 )
 console = Console()
+app.add_typer(dataset_app, name="dataset")
 
 
 @app.callback()
