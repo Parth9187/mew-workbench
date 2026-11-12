@@ -3,6 +3,25 @@
 MEW is a Python 3.11+ toolkit with a src layout. The distribution is
 `mew-workbench`; the import package and CLI are `mew`.
 
+## Git workflow
+
+- `main` is stable. Never implement features directly on `main`.
+- Before editing, check the current branch and working tree; preserve unrelated changes.
+- Use `feat/<name>`, `fix/<name>`, or `refactor/<name>` branches. Create branches from
+  an up-to-date `main` unless already on the correct feature branch.
+- Use one feature branch per feature; multiple small commits are encouraged.
+- Never automatically commit, push, open PRs, or merge without explicit instruction.
+- Never force-push, use `reset --hard`, or discard user changes without permission.
+
+## Task execution
+
+- Read relevant code, tests, and requirements before editing.
+- Implement only explicitly requested scope and interfaces. Prefer small,
+  independently testable changes.
+- Do not add unrelated refactoring, dependencies, or architectural changes.
+- Ask before major architectural changes when specifications are incomplete.
+- Use typed Python, focused modules, and standard library functionality where practical.
+
 ## Architecture
 
 - `src/mew/cli.py`: Typer commands and Rich terminal output; keep commands thin.
@@ -35,6 +54,16 @@ Test observable behavior and error cases with pytest; use Typer's CliRunner for 
 
 ## Validation
 
+For every implementation change:
+
+- Add or update focused pytest tests for behavioral changes.
+- Run `uv run pytest` and `uv run ruff check .` after implementation.
+- Fix failures caused by the change; report pre-existing failures separately.
+- Inspect `git diff` before declaring the task complete.
+- Never claim tests passed unless actually executed.
+
+The full validation suite is:
+
 ```sh
 uv sync --locked
 uv run ruff check .
@@ -47,3 +76,13 @@ uv build
 
 CI runs these checks on Python 3.11 through 3.14. Update documentation and tests
 alongside changes to public behavior.
+
+## Review and delivery
+
+- Report files changed, design decisions, test outcomes, and remaining concerns.
+- Wait for explicit approval before committing or pushing. Use descriptive
+  conventional commits, such as `feat(data): add dataset schema`.
+- Integrate feature branches through GitHub PRs targeting `main`; require passing
+  CI and human review before merging.
+- Prefer squash merge for completed feature PRs while preserving small commits
+  during development.
