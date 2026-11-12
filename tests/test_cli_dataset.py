@@ -87,7 +87,7 @@ def test_missing_file(tmp_path: Path, extension: str) -> None:
 
     assert result.exit_code == 2
     assert "Error loading" in result.output
-    assert "No such file" in result.output
+    assert "No such file" in " ".join(result.output.split())
     assert "Traceback" not in result.output
 
 
