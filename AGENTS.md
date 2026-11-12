@@ -6,12 +6,23 @@ MEW is a Python 3.11+ toolkit with a src layout. The distribution is
 ## Git workflow
 
 - `main` is stable. Never implement features directly on `main`.
-- Before editing, check the current branch and working tree; preserve unrelated changes.
-- Use `feat/<name>`, `fix/<name>`, or `refactor/<name>` branches. Create branches from
-  an up-to-date `main` unless already on the correct feature branch.
-- Use one feature branch per feature; multiple small commits are encouraged.
-- Never automatically commit, push, open PRs, or merge without explicit instruction.
-- Never force-push, use `reset --hard`, or discard user changes without permission.
+- For every explicitly assigned implementation feature, manage Git and GitHub through
+  PR delivery; the user should not need to run Git commands during normal development.
+- Before editing, inspect `git status`, the current branch, remote configuration, and
+  existing changes. Never discard unrelated work.
+- For a new feature, fetch and update `main` using fast-forward only, then create a
+  descriptively named `feat/<name>`, `fix/<name>`, or `refactor/<name>` branch.
+  Reuse an existing feature branch when appropriate; use one branch per feature.
+- Implement small, independently testable tasks. Before each commit, run relevant
+  tests, `uv run pytest`, and `uv run ruff check .`, then review the diff.
+- Stage only relevant files and create descriptive Conventional Commits, such as
+  `feat(data): add dataset schema`. Commit incremental work as appropriate.
+- When the complete feature is ready, push the feature branch and create a GitHub
+  PR targeting `main` using `gh`.
+- Never force-push, rewrite shared history, bypass checks, use `reset --hard`, or
+  modify or discard unrelated changes without permission.
+- If authentication, permissions, branch state, or CI blocks a step, report the
+  blocker instead of taking unsafe shortcuts.
 
 ## Task execution
 
@@ -80,9 +91,10 @@ alongside changes to public behavior.
 ## Review and delivery
 
 - Report files changed, design decisions, test outcomes, and remaining concerns.
-- Wait for explicit approval before committing or pushing. Use descriptive
-  conventional commits, such as `feat(data): add dataset schema`.
-- Integrate feature branches through GitHub PRs targeting `main`; require passing
-  CI and human review before merging.
-- Prefer squash merge for completed feature PRs while preserving small commits
-  during development.
+- Write an original, detailed PR title and description with Summary, Changes,
+  Testing (actual commands and results), and Notes/Risks. Do not merely auto-fill
+  from commit messages.
+- Check GitHub Actions results, report failures, and provide the PR URL and final status.
+- Never merge without explicit user approval. Require passing CI and human review;
+  after approval, confirm required checks pass, squash merge, delete the feature
+  branch, and synchronize local `main`.
